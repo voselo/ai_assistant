@@ -35,7 +35,7 @@ func LoadConfig() *Config {
 		instance.Server.Host = os.Getenv("SERVER_HOST")
 		instance.Server.Port = os.Getenv("SERVER_PORT")
 	})
-	
+
 	return instance
 
 }

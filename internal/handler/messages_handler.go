@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"io/ioutil"
 	"net/http"
 
 	"messages_handler/internal/domain/service"
@@ -23,6 +24,18 @@ func (handler *MessageHandler) HandleMessage(responseWriter http.ResponseWriter,
 	logger := logging.GetLogger("trace")
 
 	logger.Info("Message handled")
+
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		logger.Error("Failed to read request body:", err)
+		http.Error(responseWriter, "Can't read body", http.StatusBadRequest)
+		return
+	}
+	defer r.Body.Close()
+
+	// Вывод сырого тела запроса в лог (необязательно)
+	logger.Trace("Request body:\n", string(body))
+
 	var request struct {
 		ChannelID string `json:"channel_id"`
 		Content   string `json:"content"`
