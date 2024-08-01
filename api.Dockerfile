@@ -26,7 +26,7 @@ COPY ./entrypoint.sh /entrypoint.sh
 COPY ./config.yml /config.yml
 
 # # wait-for-it requires bash, which alpine doesn't ship with by default. Use wait-for instead
-# ADD https://raw.githubusercontent.com/eficode/wait-for/v2.1.0/wait-for /usr/local/bin/wait-for
+ADD https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh /usr/local/bin/wait-for
 RUN chmod +rx /usr/local/bin/wait-for /entrypoint.sh
 
 ENTRYPOINT [ "sh", "/entrypoint.sh" ]

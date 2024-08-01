@@ -1,9 +1,11 @@
-version: '3.8'
+version: '3.9'
 
 services:
   app:
     container_name: messages_handler
     restart: always
+    build:
+      dockerfile: api.Dockerfile
     volumes:
       - ./config.yml:/app/config.yml
     ports:
@@ -11,6 +13,5 @@ services:
     environment:
       - SERVER_HOST=${SERVER_HOST}
       - SERVER_PORT=${SERVER_PORT}
-      - AUTH_TOKEN=${AUTH_TOKEN}
     env_file:
       - .env
