@@ -34,7 +34,7 @@ func (handler *MessageHandler) HandleMessage(responseWriter http.ResponseWriter,
 	defer r.Body.Close()
 
 	// Вывод сырого тела запроса в лог (необязательно)
-	logger.Trace("Request body:\n", string(body))
+	logger.Info("Request body:\n", string(body))
 
 	var request struct {
 		ChannelID string `json:"channel_id"`
@@ -53,8 +53,6 @@ func (handler *MessageHandler) HandleMessage(responseWriter http.ResponseWriter,
 
 	responseWriter.WriteHeader(http.StatusOK)
 }
-
-
 
 // func (h *MessageHandler) GetMessages(w http.ResponseWriter, r *http.Request) {
 // 	vars := mux.Vars(r)
