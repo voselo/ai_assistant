@@ -2,7 +2,7 @@ package handler
 
 import (
 	"encoding/json"
-	"io/ioutil"
+	"io"
 	"net/http"
 
 	"messages_handler/internal/domain/service"
@@ -25,7 +25,7 @@ func (handler *MessageHandler) HandleMessage(responseWriter http.ResponseWriter,
 
 	logger.Info("Message handled")
 
-	body, err := ioutil.ReadAll(r.Body)
+	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		logger.Error("Failed to read request body:", err)
 		http.Error(responseWriter, "Can't read body", http.StatusBadRequest)
@@ -53,6 +53,8 @@ func (handler *MessageHandler) HandleMessage(responseWriter http.ResponseWriter,
 
 	responseWriter.WriteHeader(http.StatusOK)
 }
+
+
 
 // func (h *MessageHandler) GetMessages(w http.ResponseWriter, r *http.Request) {
 // 	vars := mux.Vars(r)
