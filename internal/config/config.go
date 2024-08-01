@@ -12,7 +12,7 @@ import (
 type Config struct {
 	Server struct {
 		Host string `yaml:"host" env-default:"localhost"`
-		Port string `yaml:"port" env-default:"8888"`
+		Port string `yaml:"port" env-default:"6969"`
 	}
 }
 
