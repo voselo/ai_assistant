@@ -1,8 +1,8 @@
 package main
 
 import (
-	"messages_handler/internal/app"
-	"messages_handler/internal/config"
+	"messages_handler/config"
+	"messages_handler/internal/bootstrap"
 	"messages_handler/internal/domain/repository"
 	"messages_handler/internal/domain/service"
 	"messages_handler/internal/handler"
@@ -17,12 +17,11 @@ func main() {
 	// Read config
 	config := config.LoadConfig()
 
-	logger.Info("Config in main ", config)
-
+	// DI
 	messagesRepository := repository.NewInMemoryMessageRepository()
 	messagesService := service.NewMessageService(messagesRepository)
 	messageHandler := handler.NewMessageHandler(messagesService)
 
-	// Start app
-	app.StartApp(*config, logger, *messageHandler)
+	// Starting app
+	bootstrap.InitApp(*config, logger, *messageHandler)
 }

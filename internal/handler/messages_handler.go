@@ -25,16 +25,17 @@ func (handler *MessageHandler) HandleMessage(responseWriter http.ResponseWriter,
 
 	logger.Info("Message handled")
 
-	body, err := io.ReadAll(r.Body)
-	if err != nil {
-		logger.Error("Failed to read request body:", err)
-		http.Error(responseWriter, "Can't read body", http.StatusBadRequest)
-		return
-	}
-	defer r.Body.Close()
+	    body, err := io.ReadAll(r.Body)
+    if err != nil {
+        logger.Error("Failed to read request body:", err)
+        http.Error(responseWriter, "Can't read body", http.StatusBadRequest)
+        return
+    }
+    defer r.Body.Close()
 
-	// Вывод сырого тела запроса в лог (необязательно)
-	logger.Info("Request body:\n", string(body))
+    // Преобразование тела запроса в строку для логирования
+    jsonBody := string(body)
+    logger.Info("Received raw JSON body:", jsonBody)
 
 	var request struct {
 		ChannelID string `json:"channel_id"`

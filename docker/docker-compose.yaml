@@ -9,9 +9,10 @@ services:
     volumes:
       - ./config.yml:/app/config.yml
     ports:
-      - 6969:6969
+      -8080:${SERVER_PORT}
     environment:
+      - ENVIRONMENT=${ENVIRONMENT}
       - SERVER_HOST=${SERVER_HOST}
       - SERVER_PORT=${SERVER_PORT}
     env_file:
-      - .env
+      - cmd/server/.env.${APP_ENV}

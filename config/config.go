@@ -12,7 +12,7 @@ import (
 type Config struct {
 	Server struct {
 		Host string `yaml:"host" env-default:"localhost"`
-		Port string `yaml:"port" env-default:"6969"`
+		Port string `yaml:"port" env-default:"8080"`
 	}
 }
 
@@ -28,12 +28,20 @@ func LoadConfig() *Config {
 
 		instance = &Config{}
 
-		if err := godotenv.Load(); err != nil {
-			logger.Fatal("Error loading .env file")
+		env := os.Getenv("APP_ENV")
+		if env == "" {
+			env = "dev"
+		}
+
+		envFileName := ".env." + env
+		if err := godotenv.Load(envFileName); err != nil {
+			logger.Fatal("Error loading " + envFileName + " file")
 		}
 
 		instance.Server.Host = os.Getenv("SERVER_HOST")
 		instance.Server.Port = os.Getenv("SERVER_PORT")
+
+		logger.Info("aplication is configured ", instance)
 	})
 
 	return instance

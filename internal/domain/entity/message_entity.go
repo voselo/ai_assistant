@@ -2,7 +2,7 @@ package entity
 
 // import "time"
 
-type Message struct {
+type MessageEntity struct {
 	ChannelID    string
 	RefMessageId string
 	CrmUserId    string

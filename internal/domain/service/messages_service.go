@@ -11,7 +11,7 @@ import (
 type MessageService struct {
 	repo         repository.MessageRepository
 	timeWindow   time.Duration
-	messageCache map[string][]entity.Message
+	messageCache map[string][]entity.MessageEntity
 	mu           sync.Mutex
 }
 
@@ -22,7 +22,7 @@ func NewMessageService(repo repository.MessageRepository) *MessageService {
 	return &MessageService{
 		repo:         repo,
 		timeWindow:   duration,
-		messageCache: make(map[string][]entity.Message),
+		messageCache: make(map[string][]entity.MessageEntity),
 	}
 }
 
@@ -58,6 +58,6 @@ func (s *MessageService) processMessages(channelID string) {
 	}
 }
 
-func (service *MessageService) GetMessages(channelID string) ([]entity.Message, error) {
+func (service *MessageService) GetMessages(channelID string) ([]entity.MessageEntity, error) {
 	return service.repo.FindByChannelID(channelID)
 }

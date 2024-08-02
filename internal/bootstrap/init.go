@@ -1,23 +1,22 @@
-package app
+package bootstrap
 
 import (
 	"net/http"
 
-	"github.com/julienschmidt/httprouter"
+	"github.com/gorilla/mux"
 
-	"messages_handler/internal/config"
+	"messages_handler/config"
 	"messages_handler/internal/handler"
 	"messages_handler/pkg/logging"
 )
 
-func StartApp(
+func InitApp(
 	config config.Config,
 	logger logging.Logger,
 	messageHandler handler.MessageHandler,
 ) {
-	router := httprouter.New()
-	router.HandlerFunc("POST", "/handle_message", messageHandler.HandleMessage)
-	
+	router := mux.NewRouter()
+	router.HandleFunc("/ai/api/v1/handle_message", messageHandler.HandleMessage).Methods("POST")
 
 	address := config.Server.Host + ":" + config.Server.Port
 	logger.Infof("Server is working on %s", address)

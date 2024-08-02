@@ -7,27 +7,27 @@ import (
 
 // Interface
 type MessageRepository interface {
-	Save(message entity.Message) error
-	FindByChannelID(channelID string) ([]entity.Message, error)
+	Save(message entity.MessageEntity) error
+	FindByChannelID(channelID string) ([]entity.MessageEntity, error)
 }
 
 // Implementation
 type InMemoryMessageRepository struct {
-	messages map[string][]entity.Message
+	messages map[string][]entity.MessageEntity
 }
 
 func NewInMemoryMessageRepository() *InMemoryMessageRepository {
 	return &InMemoryMessageRepository{
-		messages: make(map[string][]entity.Message),
+		messages: make(map[string][]entity.MessageEntity),
 	}
 }
 
-func (repository *InMemoryMessageRepository) Save(message entity.Message) error {
+func (repository *InMemoryMessageRepository) Save(message entity.MessageEntity) error {
 	repository.messages[message.ChannelID] = append(repository.messages[message.ChannelID], message)
 	return nil
 }
 
-func (repository *InMemoryMessageRepository) FindByChannelID(channelID string) ([]entity.Message, error) {
+func (repository *InMemoryMessageRepository) FindByChannelID(channelID string) ([]entity.MessageEntity, error) {
 	messages, exists := repository.messages[channelID]
 	if !exists {
 		return nil, errors.New("no messages found for channel")
