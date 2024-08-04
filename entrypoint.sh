@@ -1,2 +1,3 @@
-# Watch your .go files and invoke go build if the files changed.
-CompileDaemon --build="go build -o main cmd/server/main.go"  --command=./main 
+echo "Running in $APP_ENV environment"
+
+CompileDaemon --build="go build -o /app/main cmd/server/main.go" --command="/app/main"
