@@ -8,6 +8,7 @@ RUN apk update && \
     apk add make
 
 # prevent the re-installation of vendors at every change in the source code
+WORKDIR /app
 COPY ./go.mod go.sum ./
 RUN go mod download && go mod verify
 

@@ -20,10 +20,10 @@ func InitRouter(
 	// Wazzup messages handling
 	router.HandleFunc("/ai/api/v1/messages_handler/handle_message", messageHandler.HandleMessage).Methods("POST")
 
-	address := config.Server.Host + ":" + config.Server.Port
-	logger.Infof("Server is working on %s", address)
+	host := config.Server.Host + ":" + config.Server.Port
+	logger.Infof("Server is working on %s", host)
 
-	err := http.ListenAndServe(address, router)
+	err := http.ListenAndServe(host, router)
 	if err != nil {
 		logger.Fatal(err)
 	}

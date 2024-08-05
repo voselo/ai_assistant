@@ -37,7 +37,7 @@ func LoadConfig() *Config {
 			env = "dev"
 		}
 
-		envFileName := ".env." + env
+		envFileName := "internal/config/envs/.env." + env
 		if err := godotenv.Load(envFileName); err != nil {
 			logger.Fatal("Error loading " + envFileName + " file")
 		}
@@ -48,6 +48,7 @@ func LoadConfig() *Config {
 		instance.Webhook = os.Getenv("WEBHOOK_URI")
 
 		logger.Info("aplication is configured ", instance)
+
 	})
 
 	return instance

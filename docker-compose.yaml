@@ -1,19 +1,26 @@
 version: '3.9'
 
 services:
-  app:
-    container_name: ai-assistant
+  client1:
     restart: always
     build:
       context: .
       dockerfile: api.Dockerfile
     volumes:
-      - ./config.yml:/app/config.yml   
-    environment:
-      - APP_ENV=${APP_ENV}
-      - SERVER_HOST=${SERVER_HOST}
-      - SERVER_PORT=${SERVER_PORT}
+      - .:/app  
     env_file:
-      - cmd/server/.env.${APP_ENV}
+      - internal/config/envs/.env.dev
     ports:
-      - "8080:8080"
+      - "8080:1111"
+
+  client2:
+    restart: always
+    build:
+      context: .
+      dockerfile: api.Dockerfile
+    volumes:
+      - .:/app  
+    env_file:
+      - internal/config/envs/.env.prod
+    ports:
+      - "8080:2222"
