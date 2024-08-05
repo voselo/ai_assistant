@@ -11,16 +11,16 @@ services:
     env_file:
       - internal/config/envs/.env.dev
     ports:
-      - "8080:1111"
+      - "2222:8888"
 
-  client2:
-    restart: always
-    build:
-      context: .
-      dockerfile: api.Dockerfile
-    volumes:
-      - .:/app  
-    env_file:
-      - internal/config/envs/.env.prod
-    ports:
-      - "8080:2222"
+  # client2:
+  #   restart: always
+  #   build:
+  #     context: .
+  #     dockerfile: api.Dockerfile
+  #   volumes:
+  #     - .:/app  
+  #   env_file:
+  #     - internal/config/envs/.env.prod
+  #   ports:
+  #     - "8080:1111"
