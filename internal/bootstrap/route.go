@@ -1,30 +1,45 @@
 package bootstrap
 
 import (
-	"net/http"
-
-	"github.com/gorilla/mux"
-
-	"messages_handler/internal/config"
-	"messages_handler/internal/messages_handler/handler"
+	"messages_handler/config"
 	"messages_handler/pkg/logging"
+
+	"github.com/gin-gonic/gin"
+
+	customersHandler "messages_handler/internal/customers/handler"
+	wazzupHandler "messages_handler/internal/wazzup/handler"
 )
 
 func InitRouter(
-	config config.Config,
-	logger logging.Logger,
-	messageHandler handler.MessageHandler,
+	config *config.Config,
+	logger *logging.Logger,
+	factory *Factory,
 ) {
-	router := mux.NewRouter()
+	gin.SetMode(config.Mode)
+	r := gin.Default()
 
-	// Wazzup messages handling
-	router.HandleFunc("/ai/api/v1/messages_handler/handle_message", messageHandler.HandleMessage).Methods("POST")
+	// Customers
+	customersHandler := customersHandler.New(*factory.CustomersRepository)
+	customerRoutes := r.Group("/ai/api/v1/customers")
+	{
+
+		customerRoutes.GET("/get", customersHandler.Get)
+		customerRoutes.POST("/create", customersHandler.Create)
+		customerRoutes.PUT("/update", customersHandler.Update)
+		customerRoutes.DELETE("/delete", customersHandler.Delete)
+	}
+
+	// Wazzup messages processing
+	messagesHandler := wazzupHandler.New(factory.WazzupRepository, factory.CustomersRepository)
+	wazzupRoutes := r.Group("/ai/api/v1/wazzup")
+	{
+		wazzupRoutes.POST("/handle", messagesHandler.HandleMessage)
+	}
 
 	host := config.Server.Host + ":" + config.Server.Port
 	logger.Infof("Server is working on %s", host)
 
-	err := http.ListenAndServe(host, router)
-	if err != nil {
+	if err := r.Run(host); err != nil {
 		logger.Fatal(err)
 	}
 }

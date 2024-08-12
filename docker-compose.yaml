@@ -1,26 +1,47 @@
 version: '3.9'
 
 services:
-  client1:
+
+  app:
+    container_name: ai-bot-app
     restart: always
     build:
       context: .
       dockerfile: api.Dockerfile
     volumes:
-      - .:/app  
-    env_file:
-      - internal/config/envs/.env.dev
+      - .:/app
     ports:
-      - "2222:8888"
+      - 8080:8080
+    depends_on:
+      - postgresql
 
-  # client2:
-  #   restart: always
+  postgresql:
+    container_name: ai-bot-db
+    build:
+      context: .
+      dockerfile: db.Dockerfile
+    restart: always
+    volumes:
+      - pstg:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    ports:
+      - 5432:5432
+
+  # migration:
   #   build:
-  #     context: .
-  #     dockerfile: api.Dockerfile
+  #     context: ./docker/db-migrate/
+  #     dockerfile: Dockerfile
+  #   command: >
+      
   #   volumes:
-  #     - .:/app  
-  #   env_file:
-  #     - internal/config/envs/.env.prod
-  #   ports:
-  #     - "8080:1111"
+  #   #   - ./migrations/:/migration/migrations
+  #   depends_on:
+  #     - postgresql
+    
+
+
+volumes:
+  pstg:

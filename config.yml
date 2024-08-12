@@ -1,3 +1,11 @@
+database:
+  host: psql-db
+  port: 5432
+  username: user
+  password: adminadmin123
+  database: ai-bot-db
+  sslmode: prefer
+
 server:
   host: localhost
   port: :8080

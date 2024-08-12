@@ -1,33 +1,30 @@
-FROM golang:1.22-alpine
+# Стадия сборки
+FROM golang:1.22-alpine as builder
+
+RUN apk update && apk upgrade && \
+    apk add --no-cache bash git openssh make && \
+    apk add --no-cache tzdata
+
+# Копируем локальный код в образ контейнера.
 WORKDIR /app
+COPY go.mod .
+COPY go.sum .
+RUN go mod download -x
 
-# add some necessary packages
-RUN apk update && \
-    apk add libc-dev && \
-    apk add gcc && \
-    apk add make
-
-# prevent the re-installation of vendors at every change in the source code
-WORKDIR /app
-COPY ./go.mod go.sum ./
-RUN go mod download && go mod verify
-
-# Download the Compile Daemon package and its dependencies
-RUN go get -d -v github.com/githubnemo/CompileDaemon
-
-# Install Compile Daemon for go
-RUN go install -v github.com/githubnemo/CompileDaemon
-
-# Make sure the Compile Daemon is in your PATH
-ENV PATH=$PATH:/app/bin
-
-# Copy and build the app
+# Копируем весь проект в контейнер
 COPY . .
-COPY ./entrypoint.sh /entrypoint.sh
-COPY ./config.yml /config.yml
 
-# # wait-for-it requires bash, which alpine doesn't ship with by default. Use wait-for instead
-ADD https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh /usr/local/bin/wait-for
-RUN chmod +rx /usr/local/bin/wait-for /entrypoint.sh
+# Собираем приложение
+RUN go build -o /app/main ./cmd/app/main.go
 
-ENTRYPOINT [ "sh", "/entrypoint.sh" ]
+# Финальная стадия
+FROM alpine
+
+# Устанавливаем рабочую директорию
+WORKDIR /app
+
+# Копируем собранное приложение из стадии сборки
+COPY --from=builder  /app/main .
+
+# Указываем команду по умолчанию для запуска приложения
+CMD ["/app/main"]

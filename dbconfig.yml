@@ -1,0 +1,8 @@
+development:
+  driver: postgres
+  open: user=${DB_USER} password=${DB_PASSWORD} dbname=${DB_NAME} sslmode=${DB_SSL_MODE}
+  dir: 
+
+production:
+  driver: postgres
+  open: user=${DB_USER} password=${DB_PASSWORD} dbname=${DB_NAME} sslmode=${DB_SSL_MODE}
