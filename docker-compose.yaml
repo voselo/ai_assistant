@@ -3,17 +3,30 @@ version: '3.9'
 services:
 
   app:
-    container_name: ai-bot-app
+    image: ai-assistant-app
+    container_name: backend-app
     restart: always
     build:
       context: .
       dockerfile: api.Dockerfile
-    volumes:
-      - .:/app
+    environment:
+      - MODE=${MODE}
+      - API_KEY=${API_KEY}
+      - SERVER_HOST=${SERVER_HOST}
+      - SERVER_PORT=${SERVER_PORT}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+      - DB_SSL_MODE=${DB_SSL_MODE}
     ports:
       - 8080:8080
     depends_on:
       - postgresql
+    networks:
+      - ps
+    
 
   postgresql:
     container_name: ai-bot-db
@@ -29,6 +42,8 @@ services:
       - POSTGRES_DB=${DB_NAME}
     ports:
       - 5432:5432
+    networks:
+      - ps
 
   # migration:
   #   build:
@@ -40,8 +55,10 @@ services:
   #   #   - ./migrations/:/migration/migrations
   #   depends_on:
   #     - postgresql
-    
 
+
+networks:
+  ps:
 
 volumes:
   pstg:
