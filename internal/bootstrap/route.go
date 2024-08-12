@@ -5,8 +5,10 @@ import (
 	"messages_handler/pkg/logging"
 
 	"github.com/gin-gonic/gin"
+	// ginSwagger "github.com/swaggo/gin-swagger"
 
 	customersHandler "messages_handler/internal/customers/handler"
+	"messages_handler/internal/middleware"
 	wazzupHandler "messages_handler/internal/wazzup/handler"
 )
 
@@ -17,10 +19,13 @@ func InitRouter(
 ) {
 	gin.SetMode(config.Mode)
 	r := gin.Default()
+	// r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	// Customers
 	customersHandler := customersHandler.New(config, *factory.CustomersRepository)
 	customerRoutes := r.Group("/ai/api/v1/customers")
+	customerRoutes.Use(middleware.AdminAuthMiddleware(config))
+
 	{
 
 		customerRoutes.GET("/get", customersHandler.Get)

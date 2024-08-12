@@ -8,6 +8,9 @@ import (
 	_ "github.com/jackc/pgx/stdlib"
 )
 
+// @securityDefinitions.apikey	ApiKeyAuth
+// @in							header
+// @name						x-token
 func main() {
 	logger := logging.GetLogger("Info")
 	logger.Info("App is started")
