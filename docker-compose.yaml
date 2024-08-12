@@ -5,7 +5,7 @@ services:
   app:
     image: ai-assistant-app
     container_name: backend-app
-    restart: always
+    restart: unless-stopped
     build:
       context: .
       dockerfile: api.Dockerfile
@@ -26,6 +26,12 @@ services:
       - postgresql
     networks:
       - ps
+    mem_limit: 1560m
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "400m"
+        max-file: "10"
     
 
   postgresql:
@@ -44,6 +50,11 @@ services:
       - 5432:5432
     networks:
       - ps
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"
 
   # migration:
   #   build:
