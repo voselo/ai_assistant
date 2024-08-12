@@ -33,7 +33,9 @@ func (handler *WazzupHandler) HandleMessage(ctx *gin.Context) {
 		logger.Error("Failed to read request body:", err)
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Err 1"})
 		return
-	} // Восстанавливаем тело запроса для первого парсинга
+	} 
+	
+	// Восстанавливаем тело запроса для первого парсинга
 	ctx.Request.Body = io.NopCloser(bytes.NewBuffer(data))
 
 	// Попытка преобразовать в структуру для тестового запроса

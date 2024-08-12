@@ -78,26 +78,6 @@ func (repository *WazzupRepository) ProcessMessage(message model.MessageModel) {
 
 			logger.Info(jsonData)
 
-			// Api request
-			// url := repository.cfg.Webhook
-			// req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonData))
-			// if err != nil {
-			// 	logger.Errorf("Error creating request: %v\n", err)
-			// 	return
-			// }
-			// req.Header.Set("Content-Type", "application/json")
-
-			// client := &http.Client{}
-			// resp, err := client.Do(req)
-			// if err != nil {
-			// 	logger.Errorf("Error sending request: %v\n", err)
-			// 	return
-			// }
-			// defer resp.Body.Close()
-
-			// // Response
-			// logger.Infof("Response status: %s\n", resp.Status)
-
 		},
 	)
 
