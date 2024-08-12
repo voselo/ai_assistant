@@ -29,7 +29,7 @@ services:
     
 
   postgresql:
-    container_name: ai-bot-db
+    container_name: db
     build:
       context: .
       dockerfile: db.Dockerfile

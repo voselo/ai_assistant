@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"messages_handler/config"
 	"messages_handler/internal/customers/model/dto"
 	"messages_handler/internal/customers/repository"
 	"net/http"
@@ -10,48 +11,64 @@ import (
 )
 
 type CustomersHandler struct {
+	cfg           *config.Config
 	customersRepo repository.CustomersRepository
 }
 
-func New(repository repository.CustomersRepository) *CustomersHandler {
+func New(cfg *config.Config, repository repository.CustomersRepository) *CustomersHandler {
 	return &CustomersHandler{
+		cfg:           cfg,
 		customersRepo: repository,
 	}
 }
 
 func (handler *CustomersHandler) Create(ctx *gin.Context) {
+	key := ctx.GetHeader("x-token")
+
+	if key != handler.cfg.ApiKey {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Err 1"})
+		return
+	}
+
 	var input dto.CustomerCreateDTO
 	if err := ctx.ShouldBindJSON(&input); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Err 1"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Err 2"})
 		return
 	}
 
 	customerModel := input.ToModel()
 	createdCustomer, err := handler.customersRepo.Create(customerModel)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Err 2"})
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Err 3"})
 		return
 	}
 
-	ctx.JSON(http.StatusCreated, gin.H{"customer": createdCustomer})
+	ctx.JSON(http.StatusCreated, createdCustomer)
 }
 
 func (handler *CustomersHandler) Update(ctx *gin.Context) {
+	key := ctx.GetHeader("x-token")
+
+	if key != handler.cfg.ApiKey {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Err 1"})
+		return
+	}
+
 	var input dto.CustomerUpdateDTO
 	if err := ctx.ShouldBindJSON(&input); err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Err 1"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Err 2"})
 		return
 	}
 
 	_, err := uuid.Parse(input.Id.String())
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Err 2"})
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Err 3"})
 		return
 	}
 
 	updatedCustomer, err := handler.customersRepo.Update(&input)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Err 3"})
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Err 4"})
 		return
 	}
 
@@ -60,6 +77,13 @@ func (handler *CustomersHandler) Update(ctx *gin.Context) {
 }
 
 func (handler *CustomersHandler) Get(ctx *gin.Context) {
+	key := ctx.GetHeader("x-token")
+
+	if key != handler.cfg.ApiKey {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Err 1"})
+		return
+	}
+
 	id := ctx.Query("id")
 
 	if id != "" {
@@ -70,6 +94,13 @@ func (handler *CustomersHandler) Get(ctx *gin.Context) {
 }
 
 func (handler *CustomersHandler) GetById(ctx *gin.Context, id string) {
+	key := ctx.GetHeader("x-token")
+
+	if key != handler.cfg.ApiKey {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Err 1"})
+		return
+	}
+
 	customer, err := handler.customersRepo.GetById(id)
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"error": "customer not found"})
@@ -79,20 +110,34 @@ func (handler *CustomersHandler) GetById(ctx *gin.Context, id string) {
 }
 
 func (handler *CustomersHandler) GetAll(ctx *gin.Context) {
+	key := ctx.GetHeader("x-token")
+
+	if key != handler.cfg.ApiKey {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Err 1"})
+		return
+	}
+
 	customers, err := handler.customersRepo.GetAll()
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "failed to retrieve customers"})
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Err 2"})
 		return
 	}
 	ctx.JSON(http.StatusOK, gin.H{"customers": customers})
 }
 
 func (handler *CustomersHandler) Delete(ctx *gin.Context) {
+	key := ctx.GetHeader("x-token")
+
+	if key != handler.cfg.ApiKey {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Err 1"})
+		return
+	}
+
 	id := ctx.Query("id")
 
 	err := handler.customersRepo.Delete(id)
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Err 1"})
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": "Err 2"})
 		return
 	}
 

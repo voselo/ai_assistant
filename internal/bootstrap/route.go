@@ -19,7 +19,7 @@ func InitRouter(
 	r := gin.Default()
 
 	// Customers
-	customersHandler := customersHandler.New(*factory.CustomersRepository)
+	customersHandler := customersHandler.New(config, *factory.CustomersRepository)
 	customerRoutes := r.Group("/ai/api/v1/customers")
 	{
 
