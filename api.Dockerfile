@@ -1,30 +1,22 @@
-# Стадия сборки
-FROM golang:1.22-alpine as builder
+FROM golang:1.22-alpine AS builder
+
+WORKDIR /app
 
 RUN apk update && apk upgrade && \
-    apk add --no-cache bash git openssh make && \
-    apk add --no-cache tzdata
+    apk add --no-cache bash git make
 
-# Копируем локальный код в образ контейнера.
-WORKDIR /app
-COPY go.mod .
-COPY go.sum .
+# dependencies
+COPY ["go.mod", "go.sum", "./"]
 RUN go mod download -x
 
-# Копируем весь проект в контейнер
-COPY . .
+# build
+COPY . ./
+RUN go build -o ./bin/myApp cmd/app/main.go
 
-# Собираем приложение
-RUN go build -o /app/main ./cmd/app/main.go
-
-# Финальная стадия
 FROM alpine
 
-# Устанавливаем рабочую директорию
-WORKDIR /app
+COPY --from=builder /app/bin/myApp /app/bin/myApp
 
-# Копируем собранное приложение из стадии сборки
-COPY --from=builder  /app/main .
+RUN chmod +x /app/bin/myApp
 
-# Указываем команду по умолчанию для запуска приложения
-CMD ["/app/main"]
+CMD ["/app/bin/myApp"]
