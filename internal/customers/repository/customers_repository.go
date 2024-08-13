@@ -97,12 +97,10 @@ func (repository *CustomersRepository) GetById(id string) (*model.CustomerModel,
 
 }
 
-func (repository *CustomersRepository) Update(updateDTO *dto.CustomerUpdateDTO) (*model.CustomerModel, error) {
+func (repository *CustomersRepository) Update(id string, updateDTO *dto.CustomerUpdateDTO) (*model.CustomerModel, error) {
 
 	var fields []string
-	params := map[string]interface{}{
-		"id": updateDTO.Id,
-	}
+	params := map[string]interface{}{"id": id}
 
 	// Проверяем какие поля переданы и добавляем их в запрос
 	if updateDTO.HasName() {

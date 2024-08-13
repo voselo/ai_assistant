@@ -14,7 +14,273 @@ const docTemplate = `{
     },
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
-    "paths": {},
+    "paths": {
+        "/ai/api/v1/customers/create": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "add a new license",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "parameters": [
+                    {
+                        "description": "customer creation model",
+                        "name": "customer",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.CustomerCreateDTO"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/ai/api/v1/customers/delete/{id}": {
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "delete customer by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/ai/api/v1/customers/get": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "get all customers",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "responses": {}
+            }
+        },
+        "/ai/api/v1/customers/get/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "get customer by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/ai/api/v1/customers/update/{id}": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "update a license",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "customers"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "customer update model",
+                        "name": "customer",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/ai/api/v1/wazzup/handle/{hash}": {
+            "post": {
+                "description": "process message",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "wazzup"
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "License hash",
+                        "name": "hash",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "message Request",
+                        "name": "message",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.MessageRequest"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        }
+    },
+    "definitions": {
+        "dto.CustomerCreateDTO": {
+            "type": "object",
+            "required": [
+                "email",
+                "license_lvl",
+                "name",
+                "wazzup_uri"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "license_expires_date": {
+                    "type": "string"
+                },
+                "license_lvl": {
+                    "type": "string",
+                    "enum": [
+                        "basic",
+                        "standart",
+                        "pro",
+                        "enterprise"
+                    ]
+                },
+                "name": {
+                    "type": "string"
+                },
+                "wazzup_uri": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.ContactModel": {
+            "type": "object",
+            "properties": {
+                "avatarUri": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.MessageModel": {
+            "type": "object",
+            "properties": {
+                "channelId": {
+                    "type": "string"
+                },
+                "chatId": {
+                    "type": "string"
+                },
+                "chatType": {
+                    "type": "string"
+                },
+                "contact": {
+                    "$ref": "#/definitions/model.ContactModel"
+                },
+                "dateTime": {
+                    "type": "string"
+                },
+                "isEcho": {
+                    "type": "boolean"
+                },
+                "messageId": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "text": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.MessageRequest": {
+            "type": "object",
+            "properties": {
+                "messages": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.MessageModel"
+                    }
+                }
+            }
+        }
+    },
     "securityDefinitions": {
         "ApiKeyAuth": {
             "type": "apiKey",

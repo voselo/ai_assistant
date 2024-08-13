@@ -7,6 +7,7 @@ import (
 
 	_ "ai_assistant/docs"
 
+	"github.com/gin-gonic/gin"
 	_ "github.com/jackc/pgx/stdlib"
 )
 
@@ -23,5 +24,7 @@ func main() {
 
 	factory := bootstrap.NewFactory(database)
 
-	bootstrap.InitRouter(config, logger, factory)
+	gin.SetMode(config.Mode)
+	r := gin.Default()
+	bootstrap.InitRouter(r, config, factory)
 }

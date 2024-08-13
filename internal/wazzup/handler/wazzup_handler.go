@@ -24,6 +24,15 @@ func New(wazzupRepo *wazzupRepo.WazzupRepository, customersRepo *customersRepo.C
 	}
 }
 
+// Wazzup handle message
+//
+// @Tags         wazzup
+// @Description  process message
+// @Param		 hash  path string true "License hash"
+// @Param        message  body      model.MessageRequest  true  "message Request"
+// @Accept       json
+// @Produce      json
+// @Router       /ai/api/v1/wazzup/handle/{hash} [post]
 func (handler *WazzupHandler) HandleMessage(ctx *gin.Context) {
 	logger := logging.GetLogger("Info")
 
@@ -50,7 +59,7 @@ func (handler *WazzupHandler) HandleMessage(ctx *gin.Context) {
 	ctx.Request.Body = io.NopCloser(bytes.NewBuffer(data))
 
 	// // Валидация лицензии
-	license := ctx.GetHeader("x-license")
+	license := ctx.Param("hash")
 
 	isValid, _ := handler.customersRepo.ValidateLicense(license)
 

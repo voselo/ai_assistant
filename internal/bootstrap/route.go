@@ -2,6 +2,7 @@ package bootstrap
 
 import (
 	"ai_assistant/config"
+	"ai_assistant/docs"
 	"ai_assistant/pkg/logging"
 
 	"ai_assistant/internal/middleware"
@@ -16,13 +17,14 @@ import (
 )
 
 func InitRouter(
+	r *gin.Engine,
 	config *config.Config,
-	logger *logging.Logger,
 	factory *Factory,
 ) {
-	gin.SetMode(config.Mode)
-	r := gin.Default()
 
+	logger := logging.GetLogger("Info")
+
+	docs.SwaggerInfo.Host = config.Server.Host + ":" + config.Server.Port
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	// Customers
@@ -32,17 +34,18 @@ func InitRouter(
 
 	{
 
-		customerRoutes.GET("/get", customersHandler.Get)
 		customerRoutes.POST("/create", customersHandler.Create)
-		customerRoutes.PUT("/update", customersHandler.Update)
-		customerRoutes.DELETE("/delete", customersHandler.Delete)
+		customerRoutes.PUT("/update/:id", customersHandler.Update)
+		customerRoutes.GET("/get", customersHandler.GetAll)
+		customerRoutes.GET("/get/:id", customersHandler.GetById)
+		customerRoutes.DELETE("/delete/:id", customersHandler.Delete)
 	}
 
 	// Wazzup messages processing
 	messagesHandler := wazzupHandler.New(factory.WazzupRepository, factory.CustomersRepository)
 	wazzupRoutes := r.Group("/ai/api/v1/wazzup")
 	{
-		wazzupRoutes.POST("/handle", messagesHandler.HandleMessage)
+		wazzupRoutes.POST("/handle/:hash", messagesHandler.HandleMessage)
 	}
 
 	host := config.Server.Host + ":" + config.Server.Port

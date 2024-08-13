@@ -16,7 +16,7 @@ func AdminAuthMiddleware(cfg *config.Config) gin.HandlerFunc {
 		key := ctx.GetHeader(tokenHeaderName)
 
 		if key != cfg.ApiKey {
-			ctx.JSON(http.StatusBadRequest, gin.H{"error": "bad request"})
+			ctx.JSON(http.StatusBadRequest, gin.H{"error": "Err auth 1"})
 			ctx.Abort()
 			return
 		}

@@ -2,12 +2,9 @@ package dto
 
 import (
 	"time"
-
-	"github.com/google/uuid"
 )
 
 type CustomerUpdateDTO struct {
-	Id                 uuid.UUID  `json:"id" binding:"required"`
 	Name               string     `json:"name"`
 	Email              string     `json:"email"`
 	WazzupUri          string     `json:"wazzup_uri"`

@@ -1,6 +1,176 @@
+definitions:
+  dto.CustomerCreateDTO:
+    properties:
+      email:
+        type: string
+      license_expires_date:
+        type: string
+      license_lvl:
+        enum:
+        - basic
+        - standart
+        - pro
+        - enterprise
+        type: string
+      name:
+        type: string
+      wazzup_uri:
+        type: string
+    required:
+    - email
+    - license_lvl
+    - name
+    - wazzup_uri
+    type: object
+  model.ContactModel:
+    properties:
+      avatarUri:
+        type: string
+      name:
+        type: string
+      username:
+        type: string
+    type: object
+  model.MessageModel:
+    properties:
+      channelId:
+        type: string
+      chatId:
+        type: string
+      chatType:
+        type: string
+      contact:
+        $ref: '#/definitions/model.ContactModel'
+      dateTime:
+        type: string
+      isEcho:
+        type: boolean
+      messageId:
+        type: string
+      status:
+        type: string
+      text:
+        type: string
+      type:
+        type: string
+    type: object
+  model.MessageRequest:
+    properties:
+      messages:
+        items:
+          $ref: '#/definitions/model.MessageModel'
+        type: array
+    type: object
 info:
   contact: {}
-paths: {}
+paths:
+  /ai/api/v1/customers/create:
+    post:
+      consumes:
+      - application/json
+      description: add a new license
+      parameters:
+      - description: customer creation model
+        in: body
+        name: customer
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CustomerCreateDTO'
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      tags:
+      - customers
+  /ai/api/v1/customers/delete/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete customer by id
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      tags:
+      - customers
+  /ai/api/v1/customers/get:
+    get:
+      consumes:
+      - application/json
+      description: get all customers
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      tags:
+      - customers
+  /ai/api/v1/customers/get/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get customer by id
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      tags:
+      - customers
+  /ai/api/v1/customers/update/{id}:
+    put:
+      consumes:
+      - application/json
+      description: update a license
+      parameters:
+      - description: id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: customer update model
+        in: body
+        name: customer
+        required: true
+        schema:
+          type: object
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      tags:
+      - customers
+  /ai/api/v1/wazzup/handle/{hash}:
+    post:
+      consumes:
+      - application/json
+      description: process message
+      parameters:
+      - description: License hash
+        in: path
+        name: hash
+        required: true
+        type: string
+      - description: message Request
+        in: body
+        name: message
+        required: true
+        schema:
+          $ref: '#/definitions/model.MessageRequest'
+      produces:
+      - application/json
+      responses: {}
+      tags:
+      - wazzup
 securityDefinitions:
   ApiKeyAuth:
     in: header
