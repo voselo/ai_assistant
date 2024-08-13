@@ -2,7 +2,7 @@ package bootstrap
 
 import (
 	"ai_assistant/config"
-	"ai_assistant/docs"
+	// "ai_assistant/docs"
 	"ai_assistant/pkg/logging"
 
 	"ai_assistant/internal/middleware"
