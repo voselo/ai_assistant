@@ -25,7 +25,7 @@ func InitRouter(
 
 	logger := logging.GetLogger("Info")
 
-	docs.SwaggerInfo.Host = config.Server.Host + ":" + config.Server.Port
+	// docs.SwaggerInfo.Host = config.BaseUrl
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	defaultConfig := cors.DefaultConfig()

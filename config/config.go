@@ -10,9 +10,10 @@ import (
 )
 
 type Config struct {
-	ApiKey string
-
 	Mode string
+
+	BaseUrl string
+	ApiKey  string
 
 	Server struct {
 		Host string `yaml:"host"`
@@ -50,11 +51,11 @@ func Init() *Config {
 
 		instance.Mode = os.Getenv("MODE")
 
+		instance.BaseUrl = os.Getenv("BASEURL")
 		instance.ApiKey = os.Getenv("API_KEY")
 
-		// Server setup
-		instance.Server.Host = os.Getenv("SERVER_HOST")
-		instance.Server.Port = os.Getenv("SERVER_PORT")
+		instance.Server.Host = os.Getenv("HOST")
+		instance.Server.Port = os.Getenv("PORT")
 
 		// Database setup
 		instance.Database.Host = os.Getenv("DB_HOST")
