@@ -5,22 +5,21 @@ import (
 	"ai_assistant/docs"
 	"ai_assistant/pkg/logging"
 
+	"ai_assistant/internal/handler"
 	"ai_assistant/internal/middleware"
+	"ai_assistant/internal/repository"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-
-	customersHandler "ai_assistant/internal/customers/handler"
-	wazzupHandler "ai_assistant/internal/wazzup/handler"
 )
 
 func InitRouter(
 	r *gin.Engine,
 	config *config.Config,
-	factory *Factory,
+	factory *repository.Factory,
 ) {
 
 	logger := logging.GetLogger("Info")
@@ -35,7 +34,7 @@ func InitRouter(
 	r.Use(cors.New(corsConfig))
 
 	// Customers
-	customersHandler := customersHandler.New(config, *factory.CustomersRepository)
+	customersHandler := handler.NewCustomerHandler(config, factory)
 	customerRoutes := r.Group("/ai/api/v1/customers")
 	customerRoutes.Use(middleware.AdminAuthMiddleware(config))
 
@@ -49,7 +48,7 @@ func InitRouter(
 	}
 
 	// Wazzup messages processing
-	messagesHandler := wazzupHandler.New(factory.WazzupRepository, factory.CustomersRepository)
+	messagesHandler := handler.NewWazzupHandler(factory)
 	wazzupRoutes := r.Group("/ai/api/v1/wazzup")
 	{
 		wazzupRoutes.POST("/handle/:hash", messagesHandler.HandleMessage)

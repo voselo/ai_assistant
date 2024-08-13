@@ -3,6 +3,7 @@ package main
 import (
 	"ai_assistant/config"
 	"ai_assistant/internal/bootstrap"
+	"ai_assistant/internal/repository"
 	"ai_assistant/pkg/logging"
 
 	"github.com/gin-gonic/gin"
@@ -10,7 +11,6 @@ import (
 	_ "ai_assistant/docs"
 
 	_ "github.com/jackc/pgx/stdlib"
-
 )
 
 // @securityDefinitions.apikey	ApiKeyAuth
@@ -24,7 +24,7 @@ func main() {
 	config := config.Init()
 	database := bootstrap.InitDB(config)
 
-	factory := bootstrap.NewFactory(database)
+	factory := repository.NewFactory(database)
 
 	gin.SetMode(config.Mode)
 	router := gin.Default()
