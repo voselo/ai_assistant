@@ -5,8 +5,9 @@ import (
 	"ai_assistant/internal/bootstrap"
 	"ai_assistant/pkg/logging"
 
+	_ "ai_assistant/docs"
+
 	_ "github.com/jackc/pgx/stdlib"
-	_ "github.com/voselo/ai_assistant/docs"
 )
 
 // @securityDefinitions.apikey	ApiKeyAuth
