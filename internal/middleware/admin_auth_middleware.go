@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"messages_handler/config"
+	"ai_assistant/config"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

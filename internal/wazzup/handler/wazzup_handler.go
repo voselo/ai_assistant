@@ -1,12 +1,12 @@
 package handler
 
 import (
+	customersRepo "ai_assistant/internal/customers/repository"
+	"ai_assistant/internal/wazzup/model"
+	wazzupRepo "ai_assistant/internal/wazzup/repository"
+	"ai_assistant/pkg/logging"
 	"bytes"
 	"io"
-	customersRepo "messages_handler/internal/customers/repository"
-	"messages_handler/internal/wazzup/model"
-	wazzupRepo "messages_handler/internal/wazzup/repository"
-	"messages_handler/pkg/logging"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -33,8 +33,8 @@ func (handler *WazzupHandler) HandleMessage(ctx *gin.Context) {
 		logger.Error("Failed to read request body:", err)
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Err 1"})
 		return
-	} 
-	
+	}
+
 	// Восстанавливаем тело запроса для первого парсинга
 	ctx.Request.Body = io.NopCloser(bytes.NewBuffer(data))
 

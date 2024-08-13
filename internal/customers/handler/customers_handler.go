@@ -1,9 +1,9 @@
 package handler
 
 import (
-	"messages_handler/config"
-	"messages_handler/internal/customers/model/dto"
-	"messages_handler/internal/customers/repository"
+	"ai_assistant/config"
+	"ai_assistant/internal/customers/model/dto"
+	"ai_assistant/internal/customers/repository"
 	"net/http"
 
 	"github.com/gin-gonic/gin"

@@ -1,8 +1,8 @@
 package bootstrap
 
 import (
-	customersRepo "messages_handler/internal/customers/repository"
-	wazzupRepo "messages_handler/internal/wazzup/repository"
+	customersRepo "ai_assistant/internal/customers/repository"
+	wazzupRepo "ai_assistant/internal/wazzup/repository"
 
 	"github.com/jmoiron/sqlx"
 )

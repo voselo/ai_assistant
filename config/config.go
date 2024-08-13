@@ -4,7 +4,7 @@ import (
 	"os"
 	"sync"
 
-	"messages_handler/pkg/logging"
+	"ai_assistant/pkg/logging"
 
 	"github.com/joho/godotenv"
 )

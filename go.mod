@@ -1,4 +1,4 @@
-module messages_handler
+module ai_assistant
 
 go 1.22.5
 

@@ -1,20 +1,18 @@
 package bootstrap
 
 import (
-	"messages_handler/config"
-	"messages_handler/pkg/logging"
+	"ai_assistant/config"
+	"ai_assistant/pkg/logging"
 
-	"messages_handler/internal/middleware"
+	"ai_assistant/internal/middleware"
 
 	"github.com/gin-gonic/gin"
 
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-	_ "github.com/voselo/ai_assistant"
 
-	customersHandler "messages_handler/internal/customers/handler"
-	wazzupHandler "messages_handler/internal/wazzup/handler"
-
+	customersHandler "ai_assistant/internal/customers/handler"
+	wazzupHandler "ai_assistant/internal/wazzup/handler"
 )
 
 func InitRouter(

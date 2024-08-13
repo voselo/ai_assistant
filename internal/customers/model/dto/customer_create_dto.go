@@ -1,7 +1,7 @@
 package dto
 
 import (
-	"messages_handler/internal/customers/model"
+	"ai_assistant/internal/customers/model"
 	"time"
 )
 

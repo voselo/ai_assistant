@@ -1,9 +1,9 @@
 package bootstrap
 
 import (
+	"ai_assistant/config"
+	closer "ai_assistant/pkg/util"
 	"fmt"
-	"messages_handler/config"
-	closer "messages_handler/pkg/util"
 
 	"github.com/jmoiron/sqlx"
 )

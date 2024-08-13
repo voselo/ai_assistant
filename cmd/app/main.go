@@ -1,11 +1,12 @@
 package main
 
 import (
-	"messages_handler/config"
-	"messages_handler/internal/bootstrap"
-	"messages_handler/pkg/logging"
+	"ai_assistant/config"
+	"ai_assistant/internal/bootstrap"
+	"ai_assistant/pkg/logging"
 
 	_ "github.com/jackc/pgx/stdlib"
+	_ "github.com/voselo/ai_assistant/docs"
 )
 
 // @securityDefinitions.apikey	ApiKeyAuth

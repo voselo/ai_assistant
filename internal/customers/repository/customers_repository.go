@@ -1,13 +1,13 @@
 package repository
 
 import (
+	"ai_assistant/internal/customers/model"
+	"ai_assistant/internal/customers/model/dto"
+	"ai_assistant/pkg/logging"
 	"crypto/sha256"
 	"encoding/hex"
 	"errors"
 	"fmt"
-	"messages_handler/internal/customers/model"
-	"messages_handler/internal/customers/model/dto"
-	"messages_handler/pkg/logging"
 
 	"strings"
 	"time"

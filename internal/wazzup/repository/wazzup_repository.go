@@ -1,9 +1,9 @@
 package repository
 
 import (
+	"ai_assistant/internal/wazzup/model"
+	"ai_assistant/pkg/logging"
 	"encoding/json"
-	"messages_handler/internal/wazzup/model"
-	"messages_handler/pkg/logging"
 
 	"strings"
 	"sync"
