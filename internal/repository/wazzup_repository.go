@@ -22,8 +22,8 @@ type WazzupRepository struct {
 func NewWazzupRepository() *WazzupRepository {
 	return &WazzupRepository{
 		chats:              make(map[string]map[string]*model.ChatDetails),
-		timerDuration:      5 * time.Second,
-		firstMessageFactor: 3,
+		timerDuration:      30 * time.Second,
+		firstMessageFactor: 2,
 	}
 }
 
