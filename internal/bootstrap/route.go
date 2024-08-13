@@ -2,7 +2,7 @@ package bootstrap
 
 import (
 	"ai_assistant/config"
-	// "ai_assistant/docs"
+	"ai_assistant/docs"
 	"ai_assistant/pkg/logging"
 
 	"ai_assistant/internal/middleware"
@@ -25,13 +25,14 @@ func InitRouter(
 
 	logger := logging.GetLogger("Info")
 
-	// docs.SwaggerInfo.Host = config.BaseUrl
+	docs.SwaggerInfo.Host = config.BaseUrl
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	defaultConfig := cors.DefaultConfig()
-	defaultConfig.AllowOrigins = []string{"*"}
-	defaultConfig.AllowHeaders = []string{"*"}
-	r.Use(cors.New(defaultConfig))
+	corsConfig := cors.DefaultConfig()
+	corsConfig.AllowOrigins = []string{"*"}
+	corsConfig.AllowHeaders = []string{"*"}
+	corsConfig.AllowMethods = []string{"GET", "POST", "PUT", "DELETE"}
+	r.Use(cors.New(corsConfig))
 
 	// Customers
 	customersHandler := customersHandler.New(config, *factory.CustomersRepository)

@@ -51,7 +51,7 @@ func Init() *Config {
 
 		instance.Mode = os.Getenv("MODE")
 
-		instance.BaseUrl = os.Getenv("BASEURL")
+		instance.BaseUrl = os.Getenv("BASE_URL")
 		instance.ApiKey = os.Getenv("API_KEY")
 
 		instance.Server.Host = os.Getenv("HOST")
