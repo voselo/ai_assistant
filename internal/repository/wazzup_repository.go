@@ -33,6 +33,11 @@ func (repository *WazzupRepository) ProcessMessage(uid string, message model.Mes
 	repository.mu.Lock()
 	defer repository.mu.Unlock()
 
+	// Sort only inbound
+	if message.Status != "inbound" {
+		return
+	}
+
 	// Sort message by channelId
 	channelChats, ok := repository.chats[message.ChannelId]
 	if !ok {
