@@ -22,16 +22,18 @@ func New(cfg *config.Config, repository repository.CustomersRepository) *Custome
 	}
 }
 
-// @Summary      Get a customer
-// @Description  Get customer by ID
-// @Tags         customers
-// @Accept       json
-// @Produce      json
-// @Param        id   path      int  true  "Customer ID"
-// @Success      200  {object}  Customer
-// @Failure      400  {object}  Error
-// @Failure      404  {object}  Error
-// @Router       /customers/{id} [get]
+// Customer create
+//
+//	@Tags			customers
+//	@Description	generates a license
+//	@Accept       	json
+//	@Produce      	json
+//	@Param		 	customer	body	dto.CustomerCreateDTO	true	"create manager"
+//	@Accept			json
+//	@Produce		json
+//	@Success		200  {object}  model.CustomerModel
+//	@Router       	/ai/api/v1/customers/create [post]
+//	@Security		ApiKeyAuth
 func (handler *CustomersHandler) Create(ctx *gin.Context) {
 
 	var input dto.CustomerCreateDTO

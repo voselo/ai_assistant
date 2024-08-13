@@ -4,12 +4,17 @@ import (
 	"messages_handler/config"
 	"messages_handler/pkg/logging"
 
+	"messages_handler/internal/middleware"
+
 	"github.com/gin-gonic/gin"
-	// ginSwagger "github.com/swaggo/gin-swagger"
+
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+	_ "github.com/voselo/ai_assistant"
 
 	customersHandler "messages_handler/internal/customers/handler"
-	"messages_handler/internal/middleware"
 	wazzupHandler "messages_handler/internal/wazzup/handler"
+
 )
 
 func InitRouter(
@@ -19,7 +24,8 @@ func InitRouter(
 ) {
 	gin.SetMode(config.Mode)
 	r := gin.Default()
-	// r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	// Customers
 	customersHandler := customersHandler.New(config, *factory.CustomersRepository)
