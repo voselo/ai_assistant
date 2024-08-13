@@ -7,6 +7,7 @@ import (
 
 	"ai_assistant/internal/middleware"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 
 	swaggerFiles "github.com/swaggo/files"
@@ -26,6 +27,11 @@ func InitRouter(
 
 	docs.SwaggerInfo.Host = config.Server.Host + ":" + config.Server.Port
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+	defaultConfig := cors.DefaultConfig()
+	defaultConfig.AllowOrigins = []string{"*"}
+	defaultConfig.AllowHeaders = []string{"*"}
+	r.Use(cors.New(defaultConfig))
 
 	// Customers
 	customersHandler := customersHandler.New(config, *factory.CustomersRepository)

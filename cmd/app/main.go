@@ -5,10 +5,12 @@ import (
 	"ai_assistant/internal/bootstrap"
 	"ai_assistant/pkg/logging"
 
+	"github.com/gin-gonic/gin"
+
 	_ "ai_assistant/docs"
 
-	"github.com/gin-gonic/gin"
 	_ "github.com/jackc/pgx/stdlib"
+
 )
 
 // @securityDefinitions.apikey	ApiKeyAuth
@@ -25,6 +27,9 @@ func main() {
 	factory := bootstrap.NewFactory(database)
 
 	gin.SetMode(config.Mode)
-	r := gin.Default()
-	bootstrap.InitRouter(r, config, factory)
+	router := gin.Default()
+
+	bootstrap.InitRouter(router, config, factory)
+
+
 }
